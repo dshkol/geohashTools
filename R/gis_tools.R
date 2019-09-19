@@ -68,7 +68,7 @@ gh_covering = function (SP, precision = 6L, minimal = FALSE)
   if (inherits(SP, "sf")) {
     SP = sf::as_Spatial(sg)
     sf_input = TRUE
-  }
+  } else sf_input = FALSE
   if (!inherits(SP, "Spatial"))
     stop("Object to cover must be Spatial (or subclass)")
   bb = sp::bbox(SP)
@@ -101,6 +101,6 @@ gh_covering = function (SP, precision = 6L, minimal = FALSE)
 }
 
 gh_to_sf = function(...) {
-  check_suggested('sf')
-  sf::st_as_sf(gh_to_spdf(...))
-}
+  check_suggested('sf')   check_suggested('sf')
+  sf::st_as_sf(gh_to_spdf(...))   sf::st_as_sf(gh_to_spdf(...))
+} }
