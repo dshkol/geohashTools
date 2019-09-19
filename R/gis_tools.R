@@ -99,3 +99,8 @@ gh_covering = function (SP, precision = 6L, minimal = FALSE)
       return(cover)
   }
 }
+
+gh_to_sf = function(...) {
+  check_suggested('sf')
+  sf::st_as_sf(gh_to_spdf(...))
+}
