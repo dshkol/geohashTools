@@ -65,12 +65,13 @@ gh_to_spdf.data.frame = function(gh_df, gh_col = 'gh', ...) {
 gh_covering = function (SP, precision = 6L, minimal = FALSE)
 {
   check_suggested("sp")
-  if (inherits(SP, "sf")) {
+  if (sf_input <- inherits(SP, "sf")) {
+    check_suggested("sf")
     SP = sf::as_Spatial(SP)
-    sf_input = TRUE
-  } else sf_input = FALSE
+  }
   if (!inherits(SP, "Spatial"))
     stop("Object to cover must be Spatial (or subclass)")
+  # sp::over behaves poorly with 0-column input
   if (inherits(SP, 'SpatialPointsDataFrame') && !NCOL(SP))
     SP$id = rownames(SP@data)
   bb = sp::bbox(SP)
