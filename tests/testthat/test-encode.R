@@ -24,7 +24,7 @@ test_that('geohash encoder works', {
 
   # geohash cells are _left closed, right open_: [x1, x2) x [y1, y2), see:
   #   http://geohash.org/s000
-  expect_equal(gh_encode(0, 0, 1L), 's')
+  expect_equal(gh_encode(0, 0, 2L), 's0')
 
   # boundary cases
   eps = .Machine$double.eps
@@ -71,8 +71,10 @@ test_that('geohash encoder works', {
   expect_equal(gh_encode(y, 180), '80008n')
   expect_equal(gh_encode(y, 293475908), 'db508w')
 
-  # missing input
+  # missing/infinite input
   expect_equal(gh_encode(c(y, NA), c(x, NA)), c('s0h09n', NA_character_))
+  expect_equal(gh_encode(c(NaN, Inf, -Inf, 1:3), c(1:3, NaN, Inf, -Inf)),
+               rep(NA_character_, 6L))
 
   # different branch for precision=1 of the above errors
   expect_error(gh_encode(100, x, 1L),
