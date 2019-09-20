@@ -71,6 +71,8 @@ gh_covering = function (SP, precision = 6L, minimal = FALSE)
   } else sf_input = FALSE
   if (!inherits(SP, "Spatial"))
     stop("Object to cover must be Spatial (or subclass)")
+  if (inherits(SP, 'SpatialPointsDataFrame') && !NCOL(SP))
+    SP$id = rownames(SP@data)
   bb = sp::bbox(SP)
   delta = 2 * gh_delta(precision)
   # TODO: actually goes through an encode-decode cycle -- more efficient to
@@ -85,18 +87,9 @@ gh_covering = function (SP, precision = 6L, minimal = FALSE)
     # slightly more efficient to use rgeos, but there's a bug preventing
     #   that version from working (reported 2019-08-16):
     #   cover[c(rgeos::gIntersects(cover, SP, byid = c(TRUE, FALSE))), ]
-    if (sf_input) {
-      return(sf::st_as_sf(cover[c(!is.na(sp::over(cover, SP))),]))
-    }
-    else
-      return(cover[c(!is.na(sp::over(cover, SP))),])
+    cover = cover[!drop(is.na(sp::over(cover, SP))), ]
   }
-  else {
-    if (sf_input)
-      return(sf::st_as_sf(cover))
-    else
-      return(cover)
-  }
+  return(if (sf_input) sf::st_as_sf(cover) else cover)
 }
 
 
