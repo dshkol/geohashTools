@@ -173,7 +173,7 @@ test_that('gh_covering_sf works', {
   # arguments
   expect_length(nrow(gh_covering(banjarmasin, 5L)), 9L)
   banjarmasin_tight = gh_covering(banjarmasin, minimal = TRUE)
-  expect_equal(sort(rownames(banjarmasin_tight@data))[1:10],
+  expect_equal(sort(rownames(banjarmasin_tight))[1:10],
                c("qx3kzm", "qx3kzx", "qx3mp3", "qx3mpb", "qx3mpu",
                  "qx3mpz", "qx3mr5", "qx3sbt", "qx3t06", "qx3t22"))
   expect_length(banjarmasin_tight, 10L)
